@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">My Ideas</string>
+    <string name="action_logout">Log Out</string>
+    <string name="action_gotonote">Go to note</string>
+</resources>
