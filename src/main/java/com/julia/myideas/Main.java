@@ -1,24 +1,13 @@
 package com.julia.myideas;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.joda.time.Instant;
-import org.joda.time.Interval;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,7 +15,6 @@ import android.widget.Toast;
 
 import com.evernote.client.android.AsyncNoteStoreClient;
 import com.evernote.client.android.EvernoteSession;
-import com.evernote.client.android.InvalidAuthenticationException;
 import com.evernote.client.android.OnClientCallback;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
@@ -34,10 +22,17 @@ import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
 import com.evernote.thrift.transport.TTransportException;
 
+import org.joda.time.Instant;
+import org.joda.time.Interval;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 public class Main extends Activity {
 	public static final EvernoteSession.EvernoteService EVERNOTE_SERVICE = EvernoteSession.EvernoteService.PRODUCTION;
 
-	final String TAG="Main";
 	public static final String NOTE_TITLE = "intitle:'My Ideas'";
 	public static final int MIN_MESSAGE_LENGTH = 10;
 	
@@ -70,13 +65,6 @@ public class Main extends Activity {
 		}
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
 	private void showPopupMessage(String message) {
 		myDialog.setMessage(message).show();
 	}
@@ -84,7 +72,6 @@ public class Main extends Activity {
 	/**
 	 * Get the idea entered by the user. Does error checking and pops up dialog accordingly.
 	 * Returns null if message is invalid
-	 * @return
 	 */
 	private Idea getUserEnteredIdea() {
 		EditText editText = (EditText)findViewById(R.id.editText1);
@@ -131,26 +118,6 @@ public class Main extends Activity {
 		});
 	}
 
-	public void logout(MenuItem item) {
-		try {
-			evernoteSession.logOut(this);
-			toast("Successfully logged out.");
-			onLoggedOut();
-		} catch (InvalidAuthenticationException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void gotonote(MenuItem item) {
-		if(ideasNoteGuid.length() == 0){
-			toast("Can't find note!");
-			return;
-		}
-		Intent i = new Intent("com.evernote.action.VIEW_NOTE");
-		i.putExtra("NOTE_GUID", ideasNoteGuid);
-		startActivity(i);
-	}
-
 	private void toast(final String message) {
 		runOnUiThread(new Runnable() {
 			@Override
@@ -168,10 +135,10 @@ public class Main extends Activity {
 	}
 
 	private void hideView(int id) {
-		((View)findViewById(id)).setVisibility(View.GONE);
+		(findViewById(id)).setVisibility(View.GONE);
 	}
 	private void showView(int id) {
-		((View)findViewById(id)).setVisibility(View.VISIBLE);
+		(findViewById(id)).setVisibility(View.VISIBLE);
 	}
 	public void login(View v) {
 		evernoteSession.authenticate(this);
@@ -183,7 +150,7 @@ public class Main extends Activity {
 			message = "Got it! Enter another idea here";
 		}
 		textHint(message);
-		((EditText)findViewById(R.id.editText1)).requestFocus();
+		(findViewById(R.id.editText1)).requestFocus();
 	}
 	
 	private void textHint(String hint) {
@@ -265,7 +232,7 @@ public class Main extends Activity {
 					handler.post(new Runnable(){
 						public void run() {
 							readyForAnIdea(false);
-						};
+						}
 					});
 				}
 			}
@@ -287,7 +254,7 @@ public class Main extends Activity {
 		hideView(R.id.buttonLogin);
 		showView(R.id.linearLayout1);
 		showView(R.id.textNumIdeasSoFar);
-		((Button)findViewById(R.id.buttonSubmit)).setEnabled(true);
+		findViewById(R.id.buttonSubmit).setEnabled(true);
 		textHint("Successfully initialized evernote! Finding my ideas note...");
 	}
 	

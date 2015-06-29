@@ -9,14 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Main" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="The number of ideas you create are proportional to the amount of time you spend thinking about a problem. Absorb yourself in a problem, you will solve it." />
-
     <EditText
         android:id="@+id/editText1"
         android:layout_width="fill_parent"
