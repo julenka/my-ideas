@@ -76,23 +76,26 @@ public class IdeasModel {
 			}
 		});
 	}
-	Pattern p = Pattern.compile("\\[\\[(.*?)\\]\\]");
+
+	Pattern singleIdeaPattern = Pattern.compile("\\[\\[(.*?)\\]\\]");
+	Pattern datePattern = Pattern.compile("(.*?):(.*)");
 	public void refreshIdeas() {
 		noteStoreClient.getNote(noteGuid, true, false, false, false, new OnClientCallback<Note>() {
 			@Override
 			public void onSuccess(Note data) {
 				String content = data.getContent();
-				Matcher m = p.matcher(content);
+				Matcher m = singleIdeaPattern.matcher(content);
 				ideas = new ArrayList<Idea>();
 
 				while(m.find()) {
-					String[] strs = m.group(1).split(":");
-					if(strs.length != 2) {
-						continue;
+					String idea = m.group(1);
+					Matcher m2 = datePattern.matcher(idea);
+					if (m2.matches()) {
+						String date = m2.group(1);
+						String ideaText = m2.group(2);
+						Idea toadd = new Idea(date, ideaText);
+						ideas.add(toadd);
 					}
-					Idea toadd = new Idea(strs[0], strs[1]);
-					ideas.add(toadd);
-					Log.d(getClass().getName(), "adding: " + toadd.toString() );
 				}
 				for(Runnable r: ideaRefreshCallbacks) {
 					handler.post(r);
