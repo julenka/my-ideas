@@ -22,8 +22,14 @@ class Idea implements Comparable<Idea> {
 	}
 	@Override
 	public String toString() {
-		return DATE_FORMAT.format(created) + ": " + this.content;
+		return DATE_FORMAT.format(created) + ": " + unescapeEvernoteString(this.content);
 	}
+
+	private String unescapeEvernoteString(String input) {
+		input = input.replace("&amp;", "&");
+		return input;
+	}
+
 	@Override
 	public int compareTo(Idea another) {
 		return another.created.compareTo(this.created);
