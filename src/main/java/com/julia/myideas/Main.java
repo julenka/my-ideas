@@ -165,10 +165,15 @@ public class Main extends Activity {
 	 * @return true if initialization suceeded, else false
 	 */
 	private boolean initEvernote() {
-		evernoteSession = EvernoteSession.getInstance(this, 
-				getResources().getString(R.string.consumer_key), 
-				getResources().getString(R.string.consumer_secret), 
-				EVERNOTE_SERVICE);
+		evernoteSession = new EvernoteSession.Builder(this)
+				.setEvernoteService(EVERNOTE_SERVICE)
+				.build(getResources().getString(R.string.consumer_key), getResources().getString(R.string.consumer_secret))
+				.asSingleton();
+
+//		evernoteSession = EvernoteSession.getInstance(this,
+//				getResources().getString(R.string.consumer_key),
+//				getResources().getString(R.string.consumer_secret),
+//				EVERNOTE_SERVICE);
 
 		if(!evernoteSession.isLoggedIn()) {
 			toast("You need to log in first!");
